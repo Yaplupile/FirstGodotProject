@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://x5oc7t1xlno0"]
+[gd_scene load_steps=9 format=3 uid="uid://x5oc7t1xlno0"]
 
 [ext_resource type="PackedScene" uid="uid://rgbh0vqw137o" path="res://scenes/player.tscn" id="1_go4px"]
 [ext_resource type="Texture2D" uid="uid://b31rrtmdnl0lk" path="res://assets/sprites/world_tileset.png" id="2_k3cv6"]
+[ext_resource type="PackedScene" uid="uid://hk863jwlsvfj" path="res://scenes/platform.tscn" id="3_ti4tr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jc6w1"]
 texture = ExtResource("2_k3cv6")
@@ -52,7 +53,7 @@ texture = ExtResource("2_k3cv6")
 11:0/0 = 0
 11:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:0/0/physics_layer_0/angular_velocity = 0.0
-11:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.0625, 8, -8, 8, -1.25, -8, 1)
+11:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.9375, 8, -8, 8, -1, -8, 0.875)
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
@@ -100,7 +101,7 @@ texture = ExtResource("2_k3cv6")
 11:1/0 = 0
 11:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:1/0/physics_layer_0/angular_velocity = 0.0
-11:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.0625, 8, -8, 8, -1.25, -8, 1)
+11:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.9375, 8, -8, 8, -1, -8, 0.875)
 0:2/0 = 0
 0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:2/0/physics_layer_0/angular_velocity = 0.0
@@ -148,7 +149,7 @@ texture = ExtResource("2_k3cv6")
 11:2/0 = 0
 11:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:2/0/physics_layer_0/angular_velocity = 0.0
-11:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -6.0625, 8, -8, 8, -1.25, -8, 1)
+11:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.9375, 8, -8, 8, -1, -8, 0.875)
 0:3/0 = 0
 0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:3/0/physics_layer_0/angular_velocity = 0.0
@@ -407,6 +408,44 @@ texture = ExtResource("2_k3cv6")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_jc6w1")
 
+[sub_resource type="Animation" id="Animation_kbxir"]
+resource_name = "move"
+length = 4.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 3.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(530, 53), Vector2(530, -91)]
+}
+
+[sub_resource type="Animation" id="Animation_6jbw4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(530, 53)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x7bjx"]
+_data = {
+"RESET": SubResource("Animation_6jbw4"),
+"move": SubResource("Animation_kbxir")
+}
+
 [node name="Game" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -417,6 +456,19 @@ layer_0/tile_data = PackedInt32Array(262147, 0, 0, 262146, 0, 0, 262148, 0, 0, 3
 [node name="Player" parent="." instance=ExtResource("1_go4px")]
 position = Vector2(56, 57)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(56, 57)
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(1, -7)
 zoom = Vector2(4, 4)
+position_smoothing_enabled = true
+
+[node name="Platform" parent="." instance=ExtResource("3_ti4tr")]
+position = Vector2(152, 32)
+
+[node name="Platform2" parent="." instance=ExtResource("3_ti4tr")]
+position = Vector2(530, 53)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Platform2"]
+libraries = {
+"": SubResource("AnimationLibrary_x7bjx")
+}
+autoplay = "move"

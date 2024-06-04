@@ -187,3 +187,7 @@ autoplay = "idle"
 position = Vector2(1, -7)
 scale = Vector2(0.972, 1)
 shape = SubResource("RectangleShape2D_hmor3")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true

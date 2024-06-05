@@ -32,7 +32,6 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 0
 
 [node name="ScoreCoins" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
